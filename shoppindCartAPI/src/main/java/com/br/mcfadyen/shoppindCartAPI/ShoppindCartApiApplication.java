@@ -11,6 +11,7 @@ import com.br.mcfadyen.shoppindCartAPI.manager.Controller;
 public class ShoppindCartApiApplication {
 
 	public static void main(String[] args) {
+		Controller.createProducts();
 		port(8080);
 		get("/test", (req, res) -> {
 			return Controller.getProducts();
