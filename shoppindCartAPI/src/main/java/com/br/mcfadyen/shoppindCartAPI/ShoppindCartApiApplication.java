@@ -11,11 +11,18 @@ import com.br.mcfadyen.shoppindCartAPI.manager.Controller;
 public class ShoppindCartApiApplication {
 
 	public static void main(String[] args) {
-		Controller.createProducts();
+		Controller.appSetup();
 		port(8080);
-		get("/test", (req, res) -> {
+
+		get("/products", (req, res) -> {
 			return Controller.getProducts();
 		});
+
+		
+		get("/shoppingcart", (req, res) -> {			
+			return Controller.getShoppingCart(req);
+		});
+		
 	}
 }
 //./mvnw spring-boot:run
