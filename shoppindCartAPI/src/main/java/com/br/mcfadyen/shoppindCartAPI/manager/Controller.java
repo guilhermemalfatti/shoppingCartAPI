@@ -3,14 +3,16 @@ package com.br.mcfadyen.shoppindCartAPI.manager;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import com.br.mcfadyen.shoppindCartAPI.model.CommerceItem;
 import com.br.mcfadyen.shoppindCartAPI.model.Product;
 import com.br.mcfadyen.shoppindCartAPI.model.ShopingCart;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.eclipse.jetty.client.HttpRequest;
-
 import spark.Request;
+import spark.Response;
 /**
  * Class that have controller method os the application
  */
@@ -19,6 +21,9 @@ public class Controller {
 	private static List<Product> products = new ArrayList<>();
 	private static final Logger logger = LogManager.getLogger(Controller.class);
 	private static final String SHOPPING_CART = "shopingCart";
+	private static final String PRODUCT_ID = "product_id";
+	private static final String QUANTITY = "quantity";
+	
 
 	/**
 	 * Method to create a new mock product
@@ -44,8 +49,8 @@ public class Controller {
 	public static void appSetup(){
 		logger.info("Create products begin");
 
-		createProduct("001", "cadeira", "www.img.com.br", new BigDecimal("55.55"));
-		createProduct("002", "mesa", "www.img.com.br", new BigDecimal("99.55"));
+		createProduct("001", "cadeira", "www.img.com.br", new BigDecimal("20.00"));
+		createProduct("002", "mesa", "www.img.com.br", new BigDecimal("10.00"));
 		
 		logger.info("Create products end");
 	}
@@ -55,6 +60,7 @@ public class Controller {
 	 */
 	public static List<Product> getProducts() {
 		logger.info("List products begin");
+		//TODO json object
 		return products;
 	}
 
@@ -72,7 +78,50 @@ public class Controller {
 			cart = new ShopingCart();
 			req.session().attribute(SHOPPING_CART, cart);
 		}
+		//TODO JSON obj
 		return cart;
+	}
+
+	private static Product getProduct(String id){
+		Product product = null;
+		if(products != null){
+			product = products.stream().filter(p -> id.equals(p.getId())).findAny().orElse(null);
+		}	
+
+		return product;
+	}
+
+	public static CommerceItem addItem(Request req, Response resp){
+		Integer quantity = Integer.valueOf(req.queryParams(QUANTITY).equals("") ? "0" : req.queryParams(QUANTITY));
+		String prodId = req.queryParams(PRODUCT_ID);
+		CommerceItem item = new CommerceItem();
+		Product product = null;
+		ShopingCart cart = getShoppingCart(req);
+
+		if(prodId != null && quantity != null && quantity > 0){
+			product = getProduct(prodId);
+		}else{
+			logger.error("Invalid query parmeter");
+			resp.status(400);
+			return item;
+		}
+
+		if(product != null){
+			BigDecimal amount = product.getPrice().multiply(new BigDecimal(quantity));
+
+			item = new CommerceItem();
+			item.setId(UUID.randomUUID().toString());
+			item.setProduct_id(product.getId());
+			item.setQuantity(quantity);
+			item.setAmount(amount);
+		}else{
+			logger.error("Product not found");
+			resp.status(404);
+			return item;
+		}
+		
+		cart.addItem(item);
+		return item;
 	}
 
 }
