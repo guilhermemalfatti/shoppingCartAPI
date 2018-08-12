@@ -24,7 +24,6 @@ public class Controller {
 	private static final String PRODUCT_ID = "product_id";
 	private static final String QUANTITY = "quantity";
 	
-
 	/**
 	 * Method to create a new mock product
 	 * 
@@ -60,7 +59,6 @@ public class Controller {
 	 */
 	public static List<Product> getProducts() {
 		logger.info("List products begin");
-		//TODO json object
 		return products;
 	}
 
@@ -75,10 +73,10 @@ public class Controller {
 		ShopingCart cart = req.session().attribute(SHOPPING_CART);
 
 		if(cart == null){
+			logger.info("cart do not exist in this session.");
 			cart = new ShopingCart();
 			req.session().attribute(SHOPPING_CART, cart);
 		}
-		//TODO JSON obj
 		return cart;
 	}
 
@@ -122,6 +120,26 @@ public class Controller {
 		
 		cart.addItem(item);
 		return item;
+	}
+
+	public static String rmItem(Request req, Response resp){		
+		ShopingCart cart = getShoppingCart(req);
+		Boolean removed = false;
+		String commerceId = req.params("id");
+
+		if(cart != null && cart.getItems().size() > 0  && commerceId != null){
+			removed = cart.rmItem(commerceId);			
+		}else{
+			logger.error("Error to remove the item");
+		}
+
+		if(removed){
+			return "";
+		}else{
+			resp.status(404);
+			return "Item not found";
+		}
+		
 	}
 
 }

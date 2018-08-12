@@ -53,6 +53,17 @@ public class ShopingCart{
         
         calcAmount();
     }
+    
+    /**
+     * @param item the item to remove
+     */
+    public Boolean rmItem(String commerceId){
+        Boolean removed = this.items.removeIf(i -> i.getId().equals(commerceId));			
+        
+        calcAmount();
+
+        return removed;
+    }
 
     /**
      * Method to calculate the total amount of the shopping cart
