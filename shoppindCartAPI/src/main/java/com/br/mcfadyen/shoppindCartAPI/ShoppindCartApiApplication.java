@@ -15,9 +15,7 @@ public class ShoppindCartApiApplication {
 		Controller.appSetup();
 		port(8080);
 
-		get("/products", (req, res) -> {
-			return Controller.getProducts();
-		});
+		get("/products", (req, res) -> Controller.getProducts(), gson::toJson);
 
 		get("/shoppingcart", (req, res) -> Controller.getShoppingCart(req), gson::toJson);
 		
