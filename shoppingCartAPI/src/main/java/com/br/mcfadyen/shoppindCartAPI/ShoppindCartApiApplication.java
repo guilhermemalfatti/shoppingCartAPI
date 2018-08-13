@@ -13,7 +13,7 @@ public class ShoppindCartApiApplication {
 	public static void main(String[] args) {
 		Gson gson = new Gson();
 		Controller.appSetup();
-		port(8080);
+		port(getHerokuAssignedPort());
 
 		get("/products", (req, res) -> Controller.getProducts(), gson::toJson);
 
@@ -23,5 +23,13 @@ public class ShoppindCartApiApplication {
 		
 		post("/shoppingcart/items/:id", (req, res) -> Controller.rmItem(req, res), gson::toJson);
 	}
+
+	static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 8080; //return default port if heroku-port isn't set (i.e. on localhost)
+    }
 }
 //./mvnw spring-boot:run
