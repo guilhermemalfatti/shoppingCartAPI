@@ -81,6 +81,7 @@ public class Controller {
 
 		if(cart == null){
 			logger.info("cart do not exist in this session.");
+			
 			cart = new ShopingCart();
 			req.session().attribute(SHOPPING_CART, cart);
 		}
@@ -96,27 +97,41 @@ public class Controller {
 		return product;
 	}
 
-	public static CommerceItem addItem(Request req, Response resp){
+	public static CommerceItem addOrUpdateItem(Request req, Response resp){
 		Integer quantity = Integer.valueOf(req.queryParams(QUANTITY).equals("") ? "0" : req.queryParams(QUANTITY));
 		String prodId = req.queryParams(PRODUCT_ID);
-		CommerceItem item = new CommerceItem();
-		Product product = null;
+		CommerceItem item = null;
 		ShopingCart cart = getShoppingCart(req);
 
 		if(prodId != null && quantity != null && quantity > 0){
-			product = getProduct(prodId);
+			
+			if(cart.getItems() != null && cart.getItems().size() > 0){
+				//check whether the item exist in the cart
+				item = cart.getItems().stream().filter(p -> prodId.equals(p.getProduct_id())).findAny().orElse(null);
+			}
+
+			if(item != null){				
+				item = updateItem(quantity, item);
+			}else{				
+				item = addItem(quantity, prodId, cart, resp);	
+			}
+			cart.calcAmount();
+			return item;
 		}else{
-			logger.error("Invalid query parmeter");
+			logger.error("Invalid query parameter");
 			resp.status(400);
 			return item;
 		}
+	}
 
+	private static CommerceItem addItem(Integer quantity, String prodId, ShopingCart cart, Response resp){
+		Product product = getProduct(prodId);
+		CommerceItem item = new CommerceItem();
 		if(product != null){
 			BigDecimal amount = product.getPrice().multiply(new BigDecimal(quantity));
-
-			item = new CommerceItem();
+			
 			item.setId(UUID.randomUUID().toString());
-			item.setProduct_id(product.getId());
+			item.setProduct_id(prodId);
 			item.setQuantity(quantity);
 			item.setAmount(amount);
 		}else{
@@ -126,6 +141,16 @@ public class Controller {
 		}
 		
 		cart.addItem(item);
+		return item;
+	}
+	
+	private static CommerceItem updateItem(Integer quantity, CommerceItem item){
+		Integer newQuantity = Integer.sum(item.getQuantity(), quantity);
+		Product product = getProduct(item.getProduct_id());
+		BigDecimal amount = product.getPrice().multiply(new BigDecimal(newQuantity));
+
+		item.setQuantity(newQuantity);
+		item.setAmount(amount);
 		return item;
 	}
 

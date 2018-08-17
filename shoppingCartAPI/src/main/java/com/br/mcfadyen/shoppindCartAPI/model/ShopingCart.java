@@ -50,8 +50,6 @@ public class ShopingCart{
             this.items = new ArrayList<>();
             this.items.add(item);
         }
-        
-        calcAmount();
     }
     
     /**
@@ -68,7 +66,7 @@ public class ShopingCart{
     /**
      * Method to calculate the total amount of the shopping cart
      */
-    private void calcAmount(){
+    public void calcAmount(){
         BigDecimal amount = null;
         if(this.items != null  && this.items.size() > 0){
             amount = this.items.stream().map(CommerceItem::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);

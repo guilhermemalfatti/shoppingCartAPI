@@ -19,7 +19,7 @@ public class ShoppindCartApiApplication {
 
 		get("/shoppingcart", (req, res) -> Controller.getShoppingCart(req), gson::toJson);
 		
-		post("/shoppingcart/items", (req, res) -> Controller.addItem(req, res), gson::toJson);
+		post("/shoppingcart/items", (req, res) -> Controller.addOrUpdateItem(req, res), gson::toJson);
 		
 		post("/shoppingcart/items/:id", (req, res) -> Controller.rmItem(req, res), gson::toJson);
 	}
