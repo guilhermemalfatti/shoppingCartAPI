@@ -4,6 +4,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.post;
+import static spark.Spark.delete;
 import com.google.gson.Gson;
 import com.br.mcfadyen.shoppindCartAPI.manager.Controller;
 
@@ -21,7 +22,7 @@ public class ShoppindCartApiApplication {
 		
 		post("/shoppingcart/items", (req, res) -> Controller.addOrUpdateItem(req, res), gson::toJson);
 		
-		post("/shoppingcart/items/:id", (req, res) -> Controller.rmItem(req, res), gson::toJson);
+		delete("/shoppingcart/items/:id", (req, res) -> Controller.rmItem(req, res), gson::toJson);
 	}
 
 	static int getHerokuAssignedPort() {
