@@ -161,7 +161,8 @@ public class Controller {
 		String commerceId = req.params("id");
 
 		if(cart != null && cart.getItems() != null && cart.getItems().size() > 0  && commerceId != null){
-			removed = cart.rmItem(commerceId);			
+			removed = cart.rmItem(commerceId);	
+			cart.calcAmount();		
 		}else{
 			logger.error("Error to remove the item");
 		}

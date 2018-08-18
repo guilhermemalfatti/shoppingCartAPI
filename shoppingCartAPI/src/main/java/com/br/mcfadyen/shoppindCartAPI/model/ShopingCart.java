@@ -67,7 +67,7 @@ public class ShopingCart{
      * Method to calculate the total amount of the shopping cart
      */
     public void calcAmount(){
-        BigDecimal amount = null;
+        BigDecimal amount = new BigDecimal("0.0");
         if(this.items != null  && this.items.size() > 0){
             amount = this.items.stream().map(CommerceItem::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
         }
