@@ -31,7 +31,7 @@ public class ShoppindCartApiApplication {
 			return "OK";
 		});
 
-		before((request, response) -> response.header("Access-Control-Allow-Origin", "https://shopping-cart-web-app.herokuapp.com/"));
+		before((request, response) -> response.header("Access-Control-Allow-Origin", "https://shopping-cart-web-app.herokuapp.com"));
 		before((request, response) -> response.header("Access-Control-Allow-Credentials", "true"));
 
 		get("/products", (req, res) -> Controller.getProducts(), gson::toJson);
