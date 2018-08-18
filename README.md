@@ -7,11 +7,11 @@ As a shopper, I want to manage products from my shopping cart and see what I alr
 
 | Requirement | Description
 | ------ | ------ 
-| [REQ-001] (#Can add products to the basket) | Can add products to the basket |
-| [REQ-002] (#Can remove products to the basket) | Can remove products to the basket |
-| [REQ-003] (#Can see which products are in the basket) | Can see which products are in the basket |
-| [REQ-004] (#Can see the costs for the items in the basket) | Can see the costs for the items in the basket |
-| [REQ-005] (#A subtotal displays and gets updated whenever I make a changes to the cart) | A subtotal displays and gets updated whenever I make a changes to the cart |
+| [REQ-001](#Can-add-products-to-the-basket) | Can add products to the basket |
+| [REQ-002](#Can-remove-products-to-the-basket) | Can remove products to the basket |
+| [REQ-003](#Can-see-which-products-are-in-the-basket) | Can see which products are in the basket |
+| [REQ-004](#Can-see-the-costs-for-the-items-in-the-basket) | Can see the costs for the items in the basket |
+| [REQ-005](#A-subtotal-displays-and-gets-updated-whenever-I-make-a-changes-to-the-cart) | A subtotal displays and gets updated whenever I make a changes to the cart |
 
 ## Technical Acceptance Criteria
 
