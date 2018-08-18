@@ -1,0 +1,7 @@
+{
+    "name": "Shopping cart API",
+    "description": "Shopping cart API",
+    "website": "https://blog.codecentric.de/en/2015/10/deploying-spring-boot-applications-to-heroku", 
+    "repository": "https://github.com/guilhermemalfatti/shoppingCartAPI",
+    "image": "heroku/java"
+  }
