@@ -75,7 +75,7 @@ public class ShopingCart{
         if(amount != null){
             setAmount(amount);
         }else{
-            logger.error("Amount in the shopping acrt not calculated.");
+            logger.error("Amount in the shopping cart not calculated.");
         }
         
     }

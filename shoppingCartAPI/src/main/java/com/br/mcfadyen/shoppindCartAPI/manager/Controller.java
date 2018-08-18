@@ -78,6 +78,7 @@ public class Controller {
 	 */
 	public static ShopingCart getShoppingCart(Request req){
 		ShopingCart cart = req.session().attribute(SHOPPING_CART);
+		logger.info("Session: " + req.session().id() );
 
 		if(cart == null){
 			logger.info("cart do not exist in this session.");
@@ -159,7 +160,7 @@ public class Controller {
 		Boolean removed = false;
 		String commerceId = req.params("id");
 
-		if(cart != null && cart.getItems().size() > 0  && commerceId != null){
+		if(cart != null && cart.getItems() != null && cart.getItems().size() > 0  && commerceId != null){
 			removed = cart.rmItem(commerceId);			
 		}else{
 			logger.error("Error to remove the item");
